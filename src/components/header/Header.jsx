@@ -1,24 +1,28 @@
 
+import { useState } from "react";
 import "./header.css"
+import TopHeader from "./TopHeader";
+import MiddleHeader from "./MiddleHeader";
+import Navbar from "./Navbar";
 
 
 const Header = () => {
+
+  const [toggleMenu, setToggleMenu] = useState(false);
+
   return (
     <header className="header">
-      <div className="top-header">
-        <div className="top-header-menu">
-          <i className="bi bi-list"></i>
-        </div>
-        <div className="top-header-logo">
-          <i className="bi bi-basket2"></i>
-          اون لاين شوب برو
-        </div>
-        <div className="top-header-text">أهلا وسهلا بكم</div>
-        <div className="top-header-phone">
-          1234-567-890
-          <i className="bi bi-telephone"></i>
-        </div>
-      </div>
+
+      <TopHeader
+        toggleMenu={toggleMenu}
+        setToggleMenu={setToggleMenu}
+      />
+      <MiddleHeader />
+      <Navbar
+        toggleMenu={toggleMenu}
+        setToggleMenu={setToggleMenu}
+      />
+
     </header>
   )
 }
