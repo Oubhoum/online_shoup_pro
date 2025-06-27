@@ -5,17 +5,21 @@ import "./single-product.css"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../redux/apiCalls/productApiCall";
+import Spinner from "../../components/spinner/Spinner";
 
 const SingleProduct = () => {
 
   const dispatch = useDispatch();
-  const { product } = useSelector(state => state.product);
+  const { product, loading } = useSelector(state => state.product);
 
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getProductById(id));
   }, [id]);
+
+  if (loading) return <Spinner/>
+  // if (true) return <Spinner/>
 
   return (
 

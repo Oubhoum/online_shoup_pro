@@ -8,12 +8,10 @@ import SpecialOffers from "../../components/special-offers/SpecialOffers";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/apiCalls/productApiCall";
 
-
-
 const Home = () => {
 
   const dispatch = useDispatch();
-  const {products} = useSelector(state => state.product)
+  const { products } = useSelector(state => state.product)
 
   useEffect(() => {
     dispatch(fetchProducts())
@@ -22,10 +20,9 @@ const Home = () => {
   const laptops = products.filter((item) => item.isLaptop === true);
   const phones = products.filter((item) => item.isLaptop === false);
 
-
   return (
     <>
-
+  
       <Banner />
       <Category />
       <SpecialOffers />
@@ -36,7 +33,6 @@ const Home = () => {
       <HeadingTitle title="تسوق حسب المارك" />
       <Brands />
     </>
-
 
   )
 }

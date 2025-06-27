@@ -4,7 +4,8 @@ const productSlice = createSlice({
     name: 'product',
     initialState: {
         products: [],
-        product: null
+        product: null,
+        loading: false,
     },
 
     reducers: {
@@ -15,7 +16,16 @@ const productSlice = createSlice({
         setProduct(state, action) {
             state.product = action.payload;
         },
+
+        setLoading(state) {
+            state.loading = true;
+        },
+
+        clearLoading(state) {
+            state.loading = false;
+        }
     }
+
 });
 
 const productActions = productSlice.actions;
