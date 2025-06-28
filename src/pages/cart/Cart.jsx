@@ -1,76 +1,75 @@
 
+import { useDispatch, useSelector } from "react-redux";
 import "./cart.css";
-
-
-const cartItem = [
-  {
-    id: 1,
-    quantity: 2,
-    price: 10,
-    title: "هاتف سامسونك",
-    img: "images/products/mobiles/m1.jpg"
-  },
-  {
-    id: 2,
-    quantity: 1,
-    price: 5,
-    title: "هاتف سامسونك",
-    img: "images/products/mobiles/m2.jpg",
-
-  }
-];
-
+import { removeFormCart } from "../../redux/apiCalls/cartApiCalls";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
+
+  const { cartItems } = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
   return (
-    <div className="cart">
-      <h1 className="cart-title">سلة التسوق</h1>
-      <div className="cart-wrapper">
 
-        <div className="cart-items">
-          {
-            cartItem.map(item =>
-              <div className="cart-item" key={item.id}>
-                <div className="cart-item-img-wrapper">
-                  <img src={item.img} alt={item.title} className="cart-item-img" />
-                </div>
-                <div className="cart-item-info">
-                  <div className="cart-item-title">{item.title}</div>
-                  <div className="cart-item-quantity">
-                    الكمية :
-                    <span>{item.quantity}</span>
-                  </div>
-                  <div className="cart-item-price">
-                    السعر :
-                    <span>{item.price * item.quantity}$</span>
-                  </div>
-                  <i className="bi bi-trash cart-item-delete-icon"></i>
-                </div>
-              </div>
-            )
-          }
-        </div>
+    cartItems.length < 1 ?
 
-        <div className="cart-summary">
-          <div className="cart-summary-text">
-            <i className="bi bi-check-circle-fill"></i>
-            جزء من طلبك مؤهل للشحن المجاني. قم بتحدید هذا الخیار عند دفع
-            التفاصیل
+      <div className="empty-cart">
+        <h1>سلة التسوق الخاصة بك فارغة</h1>
+        <p>لا يوجد سلع</p>
+        <Link className="empty-cart-link" to="products">
+          صفحة السلع
+        </Link>
+      </div>
+      :
+      <div className="cart">
+        <h1 className="cart-title">سلة التسوق</h1>
+        <div className="cart-wrapper">
+
+          <div className="cart-items">
+            {
+              cartItems.map(item =>
+                <div className="cart-item" key={item.id}>
+                  <div className="cart-item-img-wrapper">
+                    <img src={item.image} alt={item.title} className="cart-item-img" />
+                  </div>
+                  <div className="cart-item-info">
+                    <div className="cart-item-title">{item.title}</div>
+                    <div className="cart-item-quantity">
+                      الكمية :
+                      <span>{item.quantity}</span>
+                    </div>
+                    <div className="cart-item-price">
+                      السعر :
+                      <span>{item.price * item.quantity}$</span>
+                    </div>
+
+                    <i onClick={() => dispatch(removeFormCart(item.id))} className="bi bi-trash cart-item-delete-icon"></i>
+                  </div>
+                </div>
+              )
+            }
           </div>
-          <div className="cart-summary-total">
-            المجوع :
-            <span>
-              {
-                cartItem.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-              }$
-            </span>
+
+          <div className="cart-summary">
+            <div className="cart-summary-text">
+              <i className="bi bi-check-circle-fill"></i>
+              جزء من طلبك مؤهل للشحن المجاني. قم بتحدید هذا الخیار عند دفع
+              التفاصیل
+            </div>
+            <div className="cart-summary-total">
+              المجوع :
+              <span>
+                {
+                  cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+                }$
+              </span>
+            </div>
+            <button className="cart-summary-btn">
+              تابع عمليات الشراء
+            </button>
           </div>
-          <button className="cart-summary-btn">
-            تابع عمليات الشراء
-          </button>
         </div>
       </div>
-    </div>
   )
 }
 

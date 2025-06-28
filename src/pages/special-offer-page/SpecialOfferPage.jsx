@@ -5,10 +5,14 @@ import { useState } from "react";
 import Rating from "../../components/rating/Rating"
 import "./special-offer-page.css";
 import ProductDescription from "./ProductDescription";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/apiCalls/cartApiCalls";
 
 const SpecialOfferPage = () => {
 
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const [qty, setQty] = useState(1);
 
   const product = specialOffers.find(offer => offer.id === parseInt(id));
 
@@ -18,6 +22,19 @@ const SpecialOfferPage = () => {
 
   const calculateDiscount = price - (discount * price) / 100;
 
+  // Add To Cart Handler
+  const addToCartHandler = () => {
+    dispatch(
+      addToCart({
+        id: id,
+        quantity: qty,
+        price: price,
+        title: title,
+        image: images[0],
+      })
+    );
+    setQty(1);
+  };
 
   return (
     <>
@@ -52,8 +69,17 @@ const SpecialOfferPage = () => {
           </div>
           <div className="special-offers-add-to-cart">
             <div>الکمیه</div>
-            <input type="number" min="1" max="10" />
-            <button className="add-to-cart-btn">
+            <input
+            value={qty}
+            onChange={e => setQty(e.target.value)}
+              type="number"
+              min="1"
+              max="10"
+            />
+            <button
+              onClick={addToCartHandler}
+              className="add-to-cart-btn"
+            >
               إضافة إلى سلة التسوق
             </button>
           </div>
@@ -65,4 +91,4 @@ const SpecialOfferPage = () => {
   );
 };
 
-export default SpecialOfferPage
+export default SpecialOfferPage;
