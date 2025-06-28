@@ -3,8 +3,11 @@ import { cartActions } from "../slices/cartSlice"
 // Add Item To Cart
 export function addToCart(newItem) {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch(cartActions.addItemToCart(newItem));
+
+        const { cart } = getState();
+        localStorage.setItem("cartItems", JSON.stringify(cart.cartItems));
     };
 
 };
@@ -13,8 +16,11 @@ export function addToCart(newItem) {
 
 export function removeFormCart(id) {
 
-    return (dispatch) => {
-        dispatch(cartActions.removeItemFromCart(id))
+    return (dispatch, getState) => {
+        dispatch(cartActions.removeItemFromCart(id));
+
+        const { cart } = getState();
+        localStorage.setItem("cartItems", JSON.stringify(cart.cartItems));
     };
 
 };
