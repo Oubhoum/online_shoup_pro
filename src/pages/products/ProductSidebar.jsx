@@ -1,7 +1,7 @@
 import ProductFilterBox from './ProductFilterBox'
 import ProductSortBox from './ProductSortBox'
 
-const ProductSidebar = () => {
+const ProductSidebar = ({ filterItem, setFilterItem, sortItem, setSortItem }) => {
   return (
     <div className="product-sidebar">
 
@@ -9,14 +9,20 @@ const ProductSidebar = () => {
         <h4 className="product-sidebar-title">
           فلترة حسب السلعة
         </h4>
-        <ProductFilterBox />
+        <ProductFilterBox
+          filterItem={filterItem}
+          setFilterItem={setFilterItem}
+        />
       </div>
 
       <div className="sidebar-item">
         <h4 className="product-sidebar-title">
           ترتيب حسب السعر
         </h4>
-        <ProductSortBox />
+        <ProductSortBox
+          sortItem={sortItem}
+          setSortItem={setSortItem}
+        />
       </div>
 
     </div>
