@@ -18,6 +18,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     dispatch(getProductById(id));
+    window.scrollTo(0, 0) ;
   }, [id]);
 
   // Add To Cart Handler

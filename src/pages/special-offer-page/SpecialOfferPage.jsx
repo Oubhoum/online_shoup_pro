@@ -1,44 +1,43 @@
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { specialOffers } from "../../data/special-offers";
-import { useState } from "react";
-
-import Rating from "../../components/rating/Rating"
-import "./special-offer-page.css";
-import ProductDescription from "./ProductDescription";
+import "./special-offers-page.css";
+import Rating from "../../components/rating/Rating";
+import ProductDescription from "./ProductDescription"
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/apiCalls/cartApiCalls";
 
-const SpecialOfferPage = () => {
+const SpecialOffersPage = () => {
+  const dispatch = useDispatch();
 
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const [qty, setQty] = useState(1);
-
-  const product = specialOffers.find(offer => offer.id === parseInt(id));
-
+  const product = specialOffers.find((p) => p.id === +id);
   const { images, title, rating, reviews, price, discount } = product;
 
   const [imageIndex, setImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
-  const calculateDiscount = price - (discount * price) / 100;
+  const calculatedDiscount = price - (discount * price) / 100;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Add To Cart Handler
   const addToCartHandler = () => {
     dispatch(
       addToCart({
         id: id,
-        quantity: qty,
+        quantity: quantity,
         price: price,
         title: title,
         image: images[0],
       })
     );
-    setQty(1);
   };
 
   return (
     <>
-
       <div className="special-offers-page">
         <div className="special-offers-page-img-wrapper">
           <img
@@ -64,31 +63,19 @@ const SpecialOfferPage = () => {
           <div className="special-offers-price">
             <b className="special-offers-item">${price}</b>
             <b className="special-offers-final-price-item">
-              ${calculateDiscount}
+              ${calculatedDiscount}
             </b>
           </div>
           <div className="special-offers-add-to-cart">
             <div>الکمیه</div>
-            <input
-            value={qty}
-            onChange={e => setQty(e.target.value)}
-              type="number"
-              min="1"
-              max="10"
-            />
-            <button
-              onClick={addToCartHandler}
-              className="add-to-cart-btn"
-            >
-              إضافة إلى سلة التسوق
-            </button>
+            <input value={quantity} onChange={e => setQuantity(e.target.value)} type="number" min="1" max="10" />
+            <button onClick={addToCartHandler} className="add-to-cart-btn">إضافه الی سله التسوق</button>
           </div>
         </div>
       </div>
-
       <ProductDescription />
     </>
   );
 };
 
-export default SpecialOfferPage;
+export default SpecialOffersPage;
