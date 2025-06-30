@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../../redux/apiCalls/productApiCall";
 import "./products.css";
+import Pagination from "./Pagination";
 
 
 const Products = () => {
@@ -13,6 +14,8 @@ const Products = () => {
 
   const [filterItem, setFilterItem] = useState("all");
   const [sortItem, setSortItem] = useState("select");
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchProducts())
@@ -36,17 +39,36 @@ const Products = () => {
         ? filterProduct.sort((a, b) => b.price - a.price)
         : filterProduct.sort((a, b) => (a.title > b.title ? 1 : -1))
 
+  // Pagination
+
+  const PRODUCT_PER_PAGE = 3;
+  const pages = Math.ceil(sortedProductList.length / PRODUCT_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * PRODUCT_PER_PAGE;
+  const finishIndex = currentPage * PRODUCT_PER_PAGE;
+  const orderedProducts = sortedProductList.slice(startIndex, finishIndex);
+
   return (
 
-    <div className="products">
-      <ProductSidebar
-        filterItem={filterItem}
-        setFilterItem={setFilterItem}
-        sortItem={sortItem}
-        setSortItem={setSortItem}
+    <>
+
+      <div className="products">
+        <ProductSidebar
+          filterItem={filterItem}
+          setFilterItem={setFilterItem}
+          sortItem={sortItem}
+          setSortItem={setSortItem}
+        />
+        <ProductList products={orderedProducts} />
+      </div>
+
+      <Pagination
+        pages={pages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
-      <ProductList products={sortedProductList} />
-    </div>
+
+    </>
 
   )
 }
